@@ -50,11 +50,9 @@ public class Core {
                     this.gui.printBooks(this.bookDAO.getAvailableBooks());
                     break;
                 case "7":
-                    this.gui.printBooks(this.bookDAO.getAllBooks()); //wyświetla wszystkie książki zarówno te wypożyczone jak i nie
+                    this.gui.listAllBooks(); //wyświetla wszystkie książki zarówno te wypożyczone jak i nie
                     break;
-                case "8":
-
-                case "10" :
+                case "8" :
                     isRunning = false;
                     break;
                 default:

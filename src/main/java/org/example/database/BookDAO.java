@@ -23,7 +23,7 @@ public class BookDAO {
                     "root",
                     "");
         } catch(SQLException | ClassNotFoundException e){
-                throw new RuntimeException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -48,8 +48,8 @@ public class BookDAO {
     public void searchBook(String data){
         String regex = "(?i).*" + data + ".*"; //(?i) - case insensitive
         this.getAllBooks().stream().filter(book -> book.getISBN().matches(regex) |
-                book.getAuthor().matches(regex) |
-                book.getTitle().matches(regex))
+                        book.getAuthor().matches(regex) |
+                        book.getTitle().matches(regex))
                 .toList()
                 .forEach(System.out::println);
     }
@@ -58,7 +58,7 @@ public class BookDAO {
         ArrayList<Book> books = new ArrayList<>();
         try{
             String sql = "SELECT * FROM tbook " +
-                    "WHERE bookid NOT IN (SELECT bookid FROM tborrows WHERE returned = 0)"; //subquery method, returned = 1 in database means book was returned
+                    "WHERE bookid NOT IN (SELECT bookid FROM tborrows WHERE returned = 0)"; //subquery, returned = 1 in database means book was returned
             PreparedStatement ps = this.connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
@@ -74,15 +74,13 @@ public class BookDAO {
         return books;
     }
     public Map<Book, List<String>> getBorrowedBooks(){
-        Book book;
-        ArrayList<String> additionalData = new ArrayList<>();
         Map<Book, List<String>> result = new HashMap<>();
         try{
             String sql =
                     "SELECT author, title, ISBN, name, surname, borrowdate " +
-                    "FROM tbook LEFT JOIN tborrows " +
-                    "ON tbook.bookid = tborrows.bookid " +
-                    "WHERE tborrows.returned = 0";
+                            "FROM tbook LEFT JOIN tborrows " +
+                            "ON tbook.bookid = tborrows.bookid " +
+                            "WHERE tborrows.returned = 0";
             PreparedStatement ps = this.connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
@@ -90,7 +88,7 @@ public class BookDAO {
                                 rs.getString("author"),
                                 rs.getString("title"),
                                 rs.getString("ISBN")),
-                           new ArrayList<>(Arrays.asList(
+                        new ArrayList<>(Arrays.asList(
                                 rs.getString("name"),
                                 rs.getString("surname"),
                                 rs.getString("borrowdate"))));
@@ -100,9 +98,8 @@ public class BookDAO {
             throw new RuntimeException(e);
         }
     }
-
     public boolean borrowBook(Book book, String name, String surname){
-    //tabela tborrows służy jako historia wypożyczeń, znajdują się tam również wiersze w których książki zostały oddane (returned = 1)
+        //tabela tborrows służy jako historia wypożyczeń, znajdują się tam również wiersze w których książki zostały oddane (returned = 1)
         try{
             String sql = "INSERT INTO tborrows " +
                     "(userid, bookid, name, surname, borrowdate, returned) VALUES (?,?,?,?,?,?)";

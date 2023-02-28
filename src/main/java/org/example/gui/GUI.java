@@ -24,9 +24,7 @@ public class GUI {
         System.out.println("5. List borrowed books not returned on time");
         System.out.println("6. List only available books");
         System.out.println("7. List all books");
-        System.out.println("8. Show your borrowed books");
-        System.out.println("9. Return your book");
-        System.out.println("10. Exit");
+        System.out.println("8. Exit");
         return scanner.nextLine();
     }
     public Book readBook(){
@@ -77,7 +75,7 @@ public class GUI {
         else System.out.println("Adding operation unsuccessful");
     }
     public Book readNewBookData(){
-        System.out.print("Author: ");
+        System.out.print("Author(s): ");
         String author = this.scanner.nextLine();
         System.out.print("Title: ");
         String title = this.scanner.nextLine();
@@ -91,7 +89,7 @@ public class GUI {
     }
 
     public void printBooks(List<Book> books){
-        for(int i = 1; i < books.size(); i++){
+        for(int i = 1; i <= books.size(); i++){
             System.out.println(i + ") " + books.get(i - 1));
         }
     }
@@ -134,6 +132,12 @@ public class GUI {
                         .append(returnDate));
             }
         }
+    }
+    public void listAllBooks(){
+        System.out.println("Available books: ");
+        this.printBooks(this.bookDAO.getAvailableBooks());
+        System.out.println("\nUnavailable books(borrowed): ");
+        this.listBorrowedBooks(this.bookDAO.getBorrowedBooks());
     }
 
     public static GUI getInstance() {
